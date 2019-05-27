@@ -27,7 +27,6 @@ int main()
     std::vector<std::array<void *, 4>> renderBufs(4);
 
     epoll_fd = epoll_create1(0);
-    struct pollfd pfd[4];
 
     try {
         render.init();
@@ -43,16 +42,14 @@ int main()
                              buffers[i]);
             captures[i].start();
 
-            // struct epoll_event event = {};
-            // event.data.fd = captures[i].getFd();
-            // event.events = EPOLLIN | EPOLLET;
-            // int ret = epoll_ctl(epoll_fd, EPOLL_CTL_ADD, captures[i].getFd(),
-                    // &event);
-            // if (ret == -1) {
-                // throw std::runtime_error("EPOLL_CTL_ADD error");
-            // }
-            pfd[i].fd = captures[i].getFd();
-            pfd[i].events = POLLIN;
+            struct epoll_event event = {};
+            event.data.u32 = i;
+            event.events = EPOLLIN; // do not use edge trigger
+            int ret = epoll_ctl(epoll_fd, EPOLL_CTL_ADD, captures[i].getFd(),
+                    &event);
+            if (ret == -1) {
+                throw std::runtime_error("EPOLL_CTL_ADD error");
+            }
         }
 
         int frameCount = 0;
@@ -62,65 +59,34 @@ int main()
 
         int index[4] = {0, 0, 0, 0};
 
-        // struct epoll_event *events = static_cast<struct epoll_event *>(calloc(10, sizeof(struct epoll_event)));
-        // int nfd;
+        struct epoll_event events[4];
+        int nfd;
 
         while (keepRunning) {
             glfwPollEvents();
 
-            // nfd = epoll_wait(epoll_fd, events, 10, -1);
-            // if (nfd == -1)
-                // throw std::runtime_error("epoll_wait error, erron: " + std::to_string(errno));
+            nfd = epoll_wait(epoll_fd, events, 10, -1);
+            if (nfd == -1)
+                throw std::runtime_error("epoll_wait error, erron: " + std::to_string(errno));
 
-            // for (int i = 0; i < nfd; i++) {
-                // if (events[i].data.fd == captures[0].getFd()) {
-                    // do {
-                        // index[0] = captures[0].readFrame();
-                        // if (index[0] == -1)
-                            // break;
-                        // render.updateTexture(0, index[0]);
-                        // captures[0].doneFrame(index[0]);
-                    // }while (1);
-                    // fCount++;
-                // }
-            // }
-            int ret = poll(pfd, 4, -1);
-            if (ret <= 0) {
-                throw std::runtime_error("poll error or timeout");
-            }
-            fCount++;
-            for (int i = 0; i < 4; i++) {
-                if (pfd[i].revents & POLLIN) {
-                    index[i] = captures[i].readFrame();
-                    render.updateTexture(i, index[i]);
-                    captures[i].doneFrame(index[i]);
-                }
+            for (int i = 0; i < nfd; i++) {
+                int data = events[i].data.u32;
+                index[data] = captures[data].readFrame();
+                if (index[data] == -1)
+                    continue;
+                render.updateTexture(data, index[data]);
+                captures[data].doneFrame(index[data]);
+                fCount++;
             }
 
             render.render(0);
-
-            // for (size_t i = 0; i < captures.size(); i++) {
-
-                // index[i] = captures[i].readFrame();
-
-                // if (index[i] == -1) {
-                    // continue;
-                // }
-
-                // fCount++;
-
-                // if (i == 0)
-                // render.updateTexture(i, index[i]);
-                // captures[i].doneFrame(index[i]);
-            // }
-            // render.render(0);
 
             if (fCount != 0) {
                 currentTime = glfwGetTime();
                 frameCount++;
                 double deltaT = currentTime - previousTime;
                 if (deltaT >= 1.0) {
-                    std::cout << frameCount / deltaT << std::endl;
+                    std::cout << "frame: " << frameCount / deltaT << std::endl;
                     frameCount = 0;
                     previousTime = currentTime;
                 }
