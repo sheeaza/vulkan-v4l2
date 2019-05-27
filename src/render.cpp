@@ -492,7 +492,6 @@ void Render::createSwapChain()
     vk::PresentModeKHR presentMode =
         chooseSwapPresentMode(swapChainSupport.presentModes);
     vk::Extent2D extent = chooseSwapExtent(swapChainSupport.capabilities);
-    std::cout << extent.width << " " << extent.height << std::endl;
 
     uint32_t imageCount = swapChainSupport.capabilities.minImageCount + 1;
     if (swapChainSupport.capabilities.maxImageCount > 0 &&

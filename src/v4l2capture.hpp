@@ -56,10 +56,7 @@ public:
     void stop();
     int readFrame();
     void doneFrame(int index);
-    int getFd()
-    {
-        return m_fd;
-    }
+    int getFd() { return m_fd; }
 
 private:
     int m_fd = -1;
