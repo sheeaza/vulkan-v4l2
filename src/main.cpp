@@ -72,8 +72,6 @@ int main()
             for (int i = 0; i < nfd; i++) {
                 int data = events[i].data.u32;
                 index[data] = captures[data].readFrame();
-                if (index[data] == -1)
-                    continue;
                 render.updateTexture(data, index[data]);
                 captures[data].doneFrame(index[data]);
                 fCount++;
