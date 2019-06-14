@@ -363,7 +363,7 @@ void Render::createSurface()
     }
 
     m_surface = vk::UniqueSurfaceKHR(surface,
-                                     vk::SurfaceKHRDeleter(*m_instance));
+                                     vk::ObjectDestroy<vk::Instance, vk::DispatchLoaderStatic>(*m_instance));
 }
 
 void Render::pickPhysicalDevice()
