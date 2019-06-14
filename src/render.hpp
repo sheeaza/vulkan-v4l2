@@ -1,5 +1,6 @@
 #include <vulkan/vulkan.h>
 #include <vulkan/vulkan.hpp>
+#define GLFW_INCLUDE_NONE //no gl or gl es headers
 #include <GLFW/glfw3.h>
 #define GLM_FORCE_RADIANS
 #include <glm/glm.hpp>
