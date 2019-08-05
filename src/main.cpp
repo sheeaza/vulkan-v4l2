@@ -34,11 +34,11 @@ int main()
             render.getBufferAddrs(i, renderBufs[i]);
             for (size_t j = 0; j < renderBufs[i].size(); j++) {
                 buffers[i][j].start = renderBufs[i][j];
-                buffers[i][j].length = 1280 * 800 * 4;
+                buffers[i][j].length = 1280 * 720 * 4;
             }
             captures[i].open("/dev/video" + std::to_string(i),
                              V4l2Capture::ImgFormat(
-                                 1280, 800, V4l2Capture::PixFormat::XBGR32),
+                                 1280, 720, V4l2Capture::PixFormat::XBGR32),
                              buffers[i]);
             captures[i].start();
 
@@ -84,7 +84,7 @@ int main()
                 frameCount++;
                 double deltaT = currentTime - previousTime;
                 if (deltaT >= 1.0) {
-                    std::cout << "frame: " << frameCount / deltaT << std::endl;
+                    // std::cout << "frame: " << frameCount / deltaT << std::endl;
                     frameCount = 0;
                     previousTime = currentTime;
                 }
