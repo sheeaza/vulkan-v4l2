@@ -11,6 +11,7 @@ public:
     enum class PixFormat
     {
         XBGR32 = V4L2_PIX_FMT_XBGR32,
+	RGB24 = V4L2_PIX_FMT_RGB24,
     };
 
     struct ImgFormat
