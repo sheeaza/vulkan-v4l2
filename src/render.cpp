@@ -129,7 +129,7 @@ void Render::init()
 void Render::updateTexture(int index, int subIndex)
 {
     int imageWidth = 1280;
-    int imageHeight = 800;
+    int imageHeight = 720;
     int frameSize = imageWidth * imageHeight * 4;
 
     transitionImageLayout(*m_utextureImage, vk::ImageLayout::eUndefined,
@@ -851,7 +851,7 @@ void Render::transitionImageLayout(vk::Image image, vk::ImageLayout oldLayout,
 void Render::createTextureImage()
 {
     int imageWidth = 1280;
-    int imageHeight = 800;
+    int imageHeight = 720;
     int frameSize = imageWidth * imageHeight * 4;
 
     m_stageMemMaps.resize(4);
@@ -878,7 +878,7 @@ void Render::createTextureImage()
 
     m_utextureImage = m_device->createImageUnique(
             vk::ImageCreateInfo({}, vk::ImageType::e2D,
-                vk::Format::eR8G8B8A8Unorm,
+                vk::Format::eB8G8R8A8Unorm,
                 vk::Extent3D(imageWidth, imageHeight, 1),
                 1, 4, vk::SampleCountFlagBits::e1, // TODO layout number dynamic
                 vk::ImageTiling::eOptimal,
@@ -902,7 +902,7 @@ void Render::createTextureImageView()
     m_utextureImageView = m_device->createImageViewUnique(
             vk::ImageViewCreateInfo({}, *m_utextureImage,
                 vk::ImageViewType::e2DArray,
-                vk::Format::eR8G8B8A8Unorm, {},
+                vk::Format::eB8G8R8A8Unorm, {},
                 vk::ImageSubresourceRange(
                     vk::ImageAspectFlagBits::eColor,
                     0, 1, 0, 4)));
