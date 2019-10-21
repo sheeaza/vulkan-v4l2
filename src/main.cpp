@@ -22,7 +22,7 @@ int main()
     int cameraNum = 4;
     Render render;
     signal(SIGINT, [](int){ keepRunning = false; });
-    std::vector<V4l2Capture> captures(4);
+    std::vector<V4l2Capture> captures(1);
     std::vector<std::array<V4l2Capture::Buffer, 4>> buffers(4);
     std::vector<std::array<void *, 4>> renderBufs(4);
 
@@ -34,11 +34,11 @@ int main()
             render.getBufferAddrs(i, renderBufs[i]);
             for (size_t j = 0; j < renderBufs[i].size(); j++) {
                 buffers[i][j].start = renderBufs[i][j];
-                buffers[i][j].length = 1280 * 720 * 4;
+                buffers[i][j].length = 1280 * 800 * 2;
             }
             captures[i].open("/dev/video" + std::to_string(i),
                              V4l2Capture::ImgFormat(
-                                 1280, 720, V4l2Capture::PixFormat::XBGR32),
+                                 1280, 800, V4l2Capture::PixFormat::BYR2),
                              buffers[i]);
             captures[i].start();
 

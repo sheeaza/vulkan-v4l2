@@ -129,8 +129,19 @@ void Render::init()
 void Render::updateTexture(int index, int subIndex)
 {
     int imageWidth = 1280;
-    int imageHeight = 720;
-    int frameSize = imageWidth * imageHeight * 4;
+    int imageHeight = 800;
+    int frameSize = imageWidth * imageHeight * 2;
+
+    uint16_t *p = static_cast<uint16_t*>(m_stageMemMaps[index][subIndex]);
+    std::cout << std::hex << p[0] << std::endl;
+    std::cout << std::hex << p[1] << std::endl;
+    std::cout << std::hex << p[2] << std::endl;
+    std::cout << std::hex << p[3] << std::endl;
+    std::cout << std::hex << p[4] << std::endl;
+    // for (uint32_t i = 0; i < imageWidth * imageHeight; i++) {
+	    // *p >>= 2;
+	    // p++;
+    // }
 
     transitionImageLayout(*m_utextureImage, vk::ImageLayout::eUndefined,
                           vk::ImageLayout::eTransferDstOptimal,
@@ -851,8 +862,8 @@ void Render::transitionImageLayout(vk::Image image, vk::ImageLayout oldLayout,
 void Render::createTextureImage()
 {
     int imageWidth = 1280;
-    int imageHeight = 720;
-    int frameSize = imageWidth * imageHeight * 4;
+    int imageHeight = 800;
+    int frameSize = imageWidth * imageHeight * 2;
 
     m_stageMemMaps.resize(4);
 
@@ -878,7 +889,7 @@ void Render::createTextureImage()
 
     m_utextureImage = m_device->createImageUnique(
             vk::ImageCreateInfo({}, vk::ImageType::e2D,
-                vk::Format::eB8G8R8A8Unorm,
+                vk::Format::eR16Sfloat,
                 vk::Extent3D(imageWidth, imageHeight, 1),
                 1, 4, vk::SampleCountFlagBits::e1, // TODO layout number dynamic
                 vk::ImageTiling::eOptimal,
@@ -902,7 +913,7 @@ void Render::createTextureImageView()
     m_utextureImageView = m_device->createImageViewUnique(
             vk::ImageViewCreateInfo({}, *m_utextureImage,
                 vk::ImageViewType::e2DArray,
-                vk::Format::eB8G8R8A8Unorm, {},
+                vk::Format::eR16Sfloat, {},
                 vk::ImageSubresourceRange(
                     vk::ImageAspectFlagBits::eColor,
                     0, 1, 0, 4)));
