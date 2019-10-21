@@ -12,6 +12,9 @@ public:
     {
         XBGR32 = V4L2_PIX_FMT_XBGR32,
 	RGB24 = V4L2_PIX_FMT_RGB24,
+	BYR2 = V4L2_PIX_FMT_SBGGR16,
+	YUV422 = V4L2_PIX_FMT_YUYV,
+	RGB565 = V4L2_PIX_FMT_RGB565,
     };
 
     struct ImgFormat
