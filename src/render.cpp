@@ -21,10 +21,15 @@
 static const int MAX_FRAMES_IN_FLIGHT = 2;
 
 const std::vector<Render::Vertex> vertices = {
+    // {{-1.0f, -1.0f}, {0.0f, 0.0f}},
+    // {{0.0f, -1.0f}, {1.0f, 0.0f}},
+    // {{-1.0f, 0.0f},  {0.0f, 1.0f}},
+    // {{0.0f, 0.0f}, {1.0f, 1.0f}},
+
     {{-1.0f, -1.0f}, {0.0f, 0.0f}},
-    {{0.0f, -1.0f}, {1.0f, 0.0f}},
-    {{-1.0f, 0.0f},  {0.0f, 1.0f}},
-    {{0.0f, 0.0f}, {1.0f, 1.0f}},
+    {{1.0f, -1.0f}, {1.0f, 0.0f}},
+    {{-1.0f, 1.0f},  {0.0f, 1.0f}},
+    {{1.0f, 1.0f}, {1.0f, 1.0f}},
 
     {{0.0f, -1.0f}, {1.0f, 0.0f}},
     {{1.0f, -1.0f}, {0.0f, 0.0f}},
@@ -1135,7 +1140,7 @@ void Render::createCommandBuffers(int index)
                 vk::PipelineBindPoint::eGraphics, *m_pipelineLayout, 0, 1,
                 &*m_descriptorSets.at(i), 0, nullptr);
 
-        for (int j = 0; j < 4; j++) {
+        for (int j = 0; j < 1; j++) {
             m_commandBuffers.at(i)->drawIndexed(4, 1, 0,
                     j * 4, j);
         }
