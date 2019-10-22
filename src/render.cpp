@@ -131,6 +131,8 @@ void Render::init()
     createSyncObjects();
 }
 
+#include <fstream>
+
 void Render::updateTexture(int index, int subIndex)
 {
     int imageWidth = 1280;
@@ -147,6 +149,17 @@ void Render::updateTexture(int index, int subIndex)
 	    // *p >>= 2;
 	    // p++;
     // }
+
+    static int first = 0;
+    if (first < 60)
+	    first++;
+
+    if (first == 60) {
+        std::ofstream wf("image.bin", std::ios::out | std::ios::binary);
+	wf.write((char*)p, 1280 * 800 * 2);
+	wf.close();
+	first++;
+    }
 
     transitionImageLayout(*m_utextureImage, vk::ImageLayout::eUndefined,
                           vk::ImageLayout::eTransferDstOptimal,
