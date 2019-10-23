@@ -12,7 +12,8 @@ void main() {
     // yuv = vec4(yuv.x * 4.0, yuv.y, yuv.z, 1.0);
     // yuv = vec4(yuv.x, yuv.y, yuv.z, 1.0);
 
-    float y = yuv.x;
+    // float y = yuv.y * 16.0 + yuv.x / 16.0;
+    float y = yuv.y;
     yuv = vec4(y, y, y, 1.0);
     // outColor.r = yuv.x * 1.0 + yuv.y * 0.0 + yuv.z * 1.4;
     // outColor.g = yuv.x * 1.0 + yuv.y * -0.343 + yuv.z * -0.711;

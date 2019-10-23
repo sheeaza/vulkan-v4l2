@@ -140,26 +140,32 @@ void Render::updateTexture(int index, int subIndex)
     int frameSize = imageWidth * imageHeight * 2;
 
     uint16_t *p = static_cast<uint16_t*>(m_stageMemMaps[index][subIndex]);
-    std::cout << std::hex << p[0] << std::endl;
-    std::cout << std::hex << p[1] << std::endl;
-    std::cout << std::hex << p[2] << std::endl;
-    std::cout << std::hex << p[3] << std::endl;
-    std::cout << std::hex << p[4] << std::endl;
-    // for (uint32_t i = 0; i < imageWidth * imageHeight; i++) {
-	    // *p >>= 2;
-	    // p++;
-    // }
+    // std::cout << std::hex << p[0] << std::endl;
+    // std::cout << std::hex << p[1] << std::endl;
+    // std::cout << std::hex << p[2] << std::endl;
+    // std::cout << std::hex << p[3] << std::endl;
+    // std::cout << std::hex << p[4] << std::endl;
+    for (uint32_t i = 0; i < imageWidth * imageHeight; i++) {
+	    // *p = 65535;
+	    // *p >>= 8;
+	    // *p = 0x3680;
+	    if (*p & 0x4)
+	        std::cout << std::hex << *p << std::endl;
+	    p++;
+    }
 
+#if 0
     static int first = 0;
-    if (first < 60)
+    if (first < 10)
 	    first++;
 
-    if (first == 60) {
+    if (first == 10) {
         std::ofstream wf("image.bin", std::ios::out | std::ios::binary);
 	wf.write((char*)p, 1280 * 800 * 2);
 	wf.close();
 	first++;
     }
+#endif
 
     transitionImageLayout(*m_utextureImage, vk::ImageLayout::eUndefined,
                           vk::ImageLayout::eTransferDstOptimal,
@@ -907,7 +913,7 @@ void Render::createTextureImage()
 
     m_utextureImage = m_device->createImageUnique(
             vk::ImageCreateInfo({}, vk::ImageType::e2D,
-                vk::Format::eR16Sfloat,
+                vk::Format::eR8G8Unorm,
                 vk::Extent3D(imageWidth, imageHeight, 1),
                 1, 4, vk::SampleCountFlagBits::e1, // TODO layout number dynamic
                 vk::ImageTiling::eOptimal,
@@ -931,7 +937,7 @@ void Render::createTextureImageView()
     m_utextureImageView = m_device->createImageViewUnique(
             vk::ImageViewCreateInfo({}, *m_utextureImage,
                 vk::ImageViewType::e2DArray,
-                vk::Format::eR16Sfloat, {},
+                vk::Format::eR8G8Unorm, {},
                 vk::ImageSubresourceRange(
                     vk::ImageAspectFlagBits::eColor,
                     0, 1, 0, 4)));
