@@ -140,7 +140,7 @@ void Render::updateTexture(int index, int subIndex)
     int frameSize = imageWidth * imageHeight * 2;
 
     uint16_t *p = static_cast<uint16_t*>(m_stageMemMaps[index][subIndex]);
-    // std::cout << std::hex << p[0] << std::endl;
+    std::cout << std::hex << p[0] << std::endl;
     // std::cout << std::hex << p[1] << std::endl;
     // std::cout << std::hex << p[2] << std::endl;
     // std::cout << std::hex << p[3] << std::endl;
@@ -149,19 +149,25 @@ void Render::updateTexture(int index, int subIndex)
 	    // *p = 65535;
 	    // *p >>= 8;
 	    // *p = 0x3680;
-	    if (*p & 0x4)
-	        std::cout << std::hex << *p << std::endl;
-	    p++;
+	    // if (*p & 0x4)
+		// std::cout << std::hex << *p << std::endl;
+	    // p++;
     }
 
-#if 0
+#if 1
     static int first = 0;
     if (first < 10)
 	    first++;
 
     if (first == 10) {
         std::ofstream wf("image.bin", std::ios::out | std::ios::binary);
-	wf.write((char*)p, 1280 * 800 * 2);
+	for (uint32_t i = 0; i < imageWidth * imageHeight; i++) {
+	    uint8_t val = (*p >> 7) & 0xff;
+	    val |= 0x80;
+	    wf.write((char*)&val, 1);
+	    *p++;
+	}
+	// wf.write((char*)p, 1280 * 800 * 2);
 	wf.close();
 	first++;
     }
