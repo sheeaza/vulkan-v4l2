@@ -9,16 +9,12 @@ layout(location = 0) out vec4 outColor;
 
 void main() {
     vec4 yuv = texture(texSampler, fragTexCoord);
-    // yuv = vec4(yuv.x * 4.0, yuv.y, yuv.z, 1.0);
-    // yuv = vec4(yuv.x, yuv.y, yuv.z, 1.0);
 
-    // float y = yuv.y * 16.0 + yuv.x / 16.0;
-    float y = yuv.y;
+    float r = yuv.r * 255.0;
+    float g = yuv.g * 255.0;
+    float y = (r + g * 256.0) / 4.0 / 4095.0;
     yuv = vec4(y, y, y, 1.0);
-    // outColor.r = yuv.x * 1.0 + yuv.y * 0.0 + yuv.z * 1.4;
-    // outColor.g = yuv.x * 1.0 + yuv.y * -0.343 + yuv.z * -0.711;
-    // outColor.b = yuv.x * 1.0 + yuv.y * 1.765 + yuv.z * 0.0;
-    // outColor.a = 1.0;
+
     outColor = yuv;
 }
 

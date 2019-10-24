@@ -139,31 +139,40 @@ void Render::updateTexture(int index, int subIndex)
     int imageHeight = 800;
     int frameSize = imageWidth * imageHeight * 2;
 
+    // std::cout << index << std::endl;
     uint16_t *p = static_cast<uint16_t*>(m_stageMemMaps[index][subIndex]);
-    std::cout << std::hex << p[0] << std::endl;
+    // std::cout << std::hex << p[0] << std::endl;
     // std::cout << std::hex << p[1] << std::endl;
     // std::cout << std::hex << p[2] << std::endl;
     // std::cout << std::hex << p[3] << std::endl;
     // std::cout << std::hex << p[4] << std::endl;
     for (uint32_t i = 0; i < imageWidth * imageHeight; i++) {
-	    // *p = 65535;
-	    // *p >>= 8;
-	    // *p = 0x3680;
 	    // if (*p & 0x4)
-		// std::cout << std::hex << *p << std::endl;
+		    // *p = 0xffff;
+	    // else
+		    // *p = 0;
+	    // p++;
+
+	    // uint16_t rev = 0;
+	    // for (uint32_t j = 0; j < 16; j++) {
+		    // if ((*p & (1 << j)))
+			    // rev |= 1 << ((16 - 1) - j);
+	    // }
+	    // rev >>= 6;
+	    // *p = rev;
 	    // p++;
     }
 
-#if 1
+#if 0
     static int first = 0;
     if (first < 10)
 	    first++;
 
     if (first == 10) {
+	uint16_t *p = static_cast<uint16_t*>(m_stageMemMaps[index][subIndex]);
         std::ofstream wf("image.bin", std::ios::out | std::ios::binary);
 	for (uint32_t i = 0; i < imageWidth * imageHeight; i++) {
-	    uint8_t val = (*p >> 7) & 0xff;
-	    val |= 0x80;
+	    uint8_t val = *p & 0xff;
 	    wf.write((char*)&val, 1);
 	    *p++;
 	}
