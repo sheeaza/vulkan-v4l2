@@ -15,6 +15,7 @@ public:
 	BYR2 = V4L2_PIX_FMT_SBGGR16,
 	YUV422 = V4L2_PIX_FMT_YUYV,
 	RGB565 = V4L2_PIX_FMT_RGB565,
+	Y10 = V4L2_PIX_FMT_Y10,
     };
 
     struct ImgFormat

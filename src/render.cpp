@@ -22,9 +22,9 @@ static const int MAX_FRAMES_IN_FLIGHT = 2;
 
 const std::vector<Render::Vertex> vertices = {
     {{-1.0f, -1.0f}, {0.0f, 0.0f}},
-    {{0.0f, -1.0f}, {1.0f, 0.0f}},
-    {{-1.0f, 0.0f},  {0.0f, 1.0f}},
-    {{0.0f, 0.0f}, {1.0f, 1.0f}},
+    {{1.0f, -1.0f}, {1.0f, 0.0f}},
+    {{-1.0f, 1.0f},  {0.0f, 1.0f}},
+    {{1.0f, 1.0f}, {1.0f, 1.0f}},
 
     {{0.0f, -1.0f}, {1.0f, 0.0f}},
     {{1.0f, -1.0f}, {0.0f, 0.0f}},
@@ -134,10 +134,10 @@ void Render::updateTexture(int index, int subIndex)
 
     uint16_t *p = static_cast<uint16_t*>(m_stageMemMaps[index][subIndex]);
     std::cout << std::hex << p[0] << std::endl;
-    std::cout << std::hex << p[1] << std::endl;
-    std::cout << std::hex << p[2] << std::endl;
-    std::cout << std::hex << p[3] << std::endl;
-    std::cout << std::hex << p[4] << std::endl;
+    // std::cout << std::hex << p[1] << std::endl;
+    // std::cout << std::hex << p[2] << std::endl;
+    // std::cout << std::hex << p[3] << std::endl;
+    // std::cout << std::hex << p[4] << std::endl;
     // for (uint32_t i = 0; i < imageWidth * imageHeight; i++) {
 	    // *p >>= 2;
 	    // p++;
@@ -889,7 +889,7 @@ void Render::createTextureImage()
 
     m_utextureImage = m_device->createImageUnique(
             vk::ImageCreateInfo({}, vk::ImageType::e2D,
-                vk::Format::eR16Sfloat,
+                vk::Format::eR8G8Unorm,
                 vk::Extent3D(imageWidth, imageHeight, 1),
                 1, 4, vk::SampleCountFlagBits::e1, // TODO layout number dynamic
                 vk::ImageTiling::eOptimal,
@@ -913,7 +913,7 @@ void Render::createTextureImageView()
     m_utextureImageView = m_device->createImageViewUnique(
             vk::ImageViewCreateInfo({}, *m_utextureImage,
                 vk::ImageViewType::e2DArray,
-                vk::Format::eR16Sfloat, {},
+                vk::Format::eR8G8Unorm, {},
                 vk::ImageSubresourceRange(
                     vk::ImageAspectFlagBits::eColor,
                     0, 1, 0, 4)));
@@ -1135,7 +1135,7 @@ void Render::createCommandBuffers(int index)
                 vk::PipelineBindPoint::eGraphics, *m_pipelineLayout, 0, 1,
                 &*m_descriptorSets.at(i), 0, nullptr);
 
-        for (int j = 0; j < 4; j++) {
+        for (int j = 0; j < 1; j++) {
             m_commandBuffers.at(i)->drawIndexed(4, 1, 0,
                     j * 4, j);
         }
