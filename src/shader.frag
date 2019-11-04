@@ -7,24 +7,43 @@ layout(location = 0) in vec3 fragTexCoord;
 
 layout(location = 0) out vec4 outColor;
 
+#define PI 3.14159265
+// #define PI 180.0
+
 void main() {
-    vec4 yuv = texture(texSampler, fragTexCoord);
-    //
-    float yl = yuv.r;
-    float yh = yuv.g;
-    float b = yuv.b;
-    float y = (yh * 255.0 * 255.0 + yl * 255.0) / 16.0 / 1023.0;
-    // yuv = vec4(yl, yl, yl, 1.0);
-    yuv = vec4(y, y, y, 1.0);
-    // yh *= 8.0;
-    // yuv = vec4(yh, yh, yh, 1.0);
-    // yuv = vec4(b, b, b, 1.0);
+    vec3 texCoord = fragTexCoord;
+    // float pi = 180.0;
+    // texCoord.y /= 2.0 * sin(PI / 2.0 + 480.0 * PI);
+    // float x = round(1.2);
+    // texCoord.y = float(1);
+    // texCoord.y /= 2.0 * sin(pi / 2.0);
+    // texCoord.y /= 2.0;
 
-    // float yh = yuv.x * 255.0;
-    // float yl = yuv.y * 255.0;
-    // float y = (yl * 4.0 + yh) / 1023.0;
-    // yuv = vec4(y, y, y, 1.0);
+    // int isrcH = int(round(fragTexCoord.y * 479.0));
+    // int a = isrcH / 2;
+    // float fsrcH = float(isrcH);
+    // float w = float(PI * (fsrcH - 0.5));
+    // float s = round(sin(w));
+    // int is = int(s);
+    // int idstH = (is + 1) * 120 + a;
+    // float fdstH = float(idstH);
+    // // float fdstH = (s + 1.0) * 120.0 +a;
+    // texCoord.y = fdstH / 479.0;
+    // // texCoord.y = s;
 
-    outColor = yuv;
+    float isodd = mod(texCoord.y, 2.0);
+    vec4 result;
+    if (bool(isodd)) {
+	vec4 evenfield = texture(texSampler, vec3(texCoord.x, texCoord.y + 1.0, texCoord.z));
+	vec4 oddfield = texture(texSampler, texCoord);
+	result = mix(evenfield, oddfield, 0.5);
+    } else {
+	vec4 evenfield = texture(texSampler, texCoord);
+	vec4 oddfield = texture(texSampler, vec3(texCoord.x, texCoord.y - 1.0, texCoord.z));
+	result = mix(evenfield, oddfield, 0.5);
+    }
+
+    outColor = result;
+    // outColor = texture(texSampler, texCoord);
 }
 

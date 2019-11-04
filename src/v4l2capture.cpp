@@ -76,13 +76,13 @@ void V4l2Capture::open(const std::string &path, const ImgFormat &imgFormat,
               << std::endl;
     m_frameSize =fmt.fmt.pix_mp.plane_fmt[0].sizeimage;
 
-    struct v4l2_streamparm parm = {};
-    parm.type = V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE;
-    if (ioctl(m_fd, VIDIOC_G_PARM, &parm)) {
-        throw std::runtime_error("failed to VIDIOC_G_PARM");
-    }
-    std::cout << "\tfps: " << parm.parm.capture.timeperframe.denominator
-              << std::endl;
+    // struct v4l2_streamparm parm = {};
+    // parm.type = V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE;
+    // if (ioctl(m_fd, VIDIOC_G_PARM, &parm)) {
+        // throw std::runtime_error("failed to VIDIOC_G_PARM");
+    // }
+    // std::cout << "\tfps: " << parm.parm.capture.timeperframe.denominator
+              // << std::endl;
 
     struct v4l2_requestbuffers req = {};
     req.type = V4L2_BUF_TYPE_VIDEO_CAPTURE_MPLANE;

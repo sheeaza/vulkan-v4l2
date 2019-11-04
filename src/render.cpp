@@ -128,12 +128,12 @@ void Render::init()
 
 void Render::updateTexture(int index, int subIndex)
 {
-    int imageWidth = 1280;
-    int imageHeight = 800;
+    int imageWidth = 720;
+    int imageHeight = 480;
     int frameSize = imageWidth * imageHeight * 2;
 
     uint16_t *p = static_cast<uint16_t*>(m_stageMemMaps[index][subIndex]);
-    std::cout << std::hex << p[0] << std::endl;
+    // std::cout << std::hex << p[0] << std::endl;
     // std::cout << std::hex << p[1] << std::endl;
     // std::cout << std::hex << p[2] << std::endl;
     // std::cout << std::hex << p[3] << std::endl;
@@ -143,6 +143,23 @@ void Render::updateTexture(int index, int subIndex)
 	    // p++;
     // }
 
+    uint16_t val = 0xffff;
+    for (uint32_t i = 0; i < 240; i++) {
+	for (uint32_t j = 0; j < imageWidth; j++) {
+	    *p = val;
+	    p++;
+	}
+	val--;
+    }
+
+    val = 0xffff;
+    for (uint32_t i = 240; i < imageHeight; i++) {
+	for (uint32_t j = 0; j < imageWidth; j++) {
+	    *p = val;
+	    p++;
+	}
+	val--;
+    }
     transitionImageLayout(*m_utextureImage, vk::ImageLayout::eUndefined,
                           vk::ImageLayout::eTransferDstOptimal,
                           vk::PipelineStageFlagBits::eTopOfPipe,
@@ -861,8 +878,8 @@ void Render::transitionImageLayout(vk::Image image, vk::ImageLayout oldLayout,
 
 void Render::createTextureImage()
 {
-    int imageWidth = 1280;
-    int imageHeight = 800;
+    int imageWidth = 720;
+    int imageHeight = 480;
     int frameSize = imageWidth * imageHeight * 2;
 
     m_stageMemMaps.resize(4);
@@ -889,7 +906,7 @@ void Render::createTextureImage()
 
     m_utextureImage = m_device->createImageUnique(
             vk::ImageCreateInfo({}, vk::ImageType::e2D,
-                vk::Format::eR8G8Unorm,
+                vk::Format::eR5G6B5UnormPack16,
                 vk::Extent3D(imageWidth, imageHeight, 1),
                 1, 4, vk::SampleCountFlagBits::e1, // TODO layout number dynamic
                 vk::ImageTiling::eOptimal,
@@ -913,7 +930,7 @@ void Render::createTextureImageView()
     m_utextureImageView = m_device->createImageViewUnique(
             vk::ImageViewCreateInfo({}, *m_utextureImage,
                 vk::ImageViewType::e2DArray,
-                vk::Format::eR8G8Unorm, {},
+                vk::Format::eR5G6B5UnormPack16, {},
                 vk::ImageSubresourceRange(
                     vk::ImageAspectFlagBits::eColor,
                     0, 1, 0, 4)));
