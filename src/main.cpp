@@ -38,7 +38,7 @@ int main()
             }
             captures[i].open("/dev/video" + std::to_string(i),
                              V4l2Capture::ImgFormat(
-                                 1280, 800, V4l2Capture::PixFormat::BYR2),
+                                 1280, 800, V4l2Capture::PixFormat::Y12),
                              buffers[i]);
             captures[i].start();
 
