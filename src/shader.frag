@@ -17,7 +17,7 @@ void main() {
     // float x = round(1.2);
     // texCoord.y = float(1);
     // texCoord.y /= 2.0 * sin(pi / 2.0);
-    // texCoord.y /= 2.0;
+    texCoord.y /= 2.0;
 
     // int isrcH = int(round(fragTexCoord.y * 479.0));
     // int a = isrcH / 2;
@@ -31,19 +31,19 @@ void main() {
     // texCoord.y = fdstH / 479.0;
     // // texCoord.y = s;
 
-    float isodd = mod(texCoord.y, 2.0);
-    vec4 result;
-    if (bool(isodd)) {
-	vec4 evenfield = texture(texSampler, vec3(texCoord.x, texCoord.y + 1.0, texCoord.z));
-	vec4 oddfield = texture(texSampler, texCoord);
-	result = mix(evenfield, oddfield, 0.5);
-    } else {
-	vec4 evenfield = texture(texSampler, texCoord);
-	vec4 oddfield = texture(texSampler, vec3(texCoord.x, texCoord.y - 1.0, texCoord.z));
-	result = mix(evenfield, oddfield, 0.5);
-    }
+    // float isodd = mod(texCoord.y, 2.0);
+    // vec4 result;
+    // if (bool(isodd)) {
+	// vec4 evenfield = texture(texSampler, vec3(texCoord.x, texCoord.y + 1.0, texCoord.z));
+	// vec4 oddfield = texture(texSampler, texCoord);
+	// result = mix(evenfield, oddfield, 0.5);
+    // } else {
+	// vec4 evenfield = texture(texSampler, texCoord);
+	// vec4 oddfield = texture(texSampler, vec3(texCoord.x, texCoord.y - 1.0, texCoord.z));
+	// result = mix(evenfield, oddfield, 0.5);
+    // }
 
-    outColor = result;
-    // outColor = texture(texSampler, texCoord);
+    // outColor = result;
+    outColor = texture(texSampler, texCoord);
 }
 

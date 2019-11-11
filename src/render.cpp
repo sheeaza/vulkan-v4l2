@@ -143,23 +143,23 @@ void Render::updateTexture(int index, int subIndex)
 	    // p++;
     // }
 
-    uint16_t val = 0xffff;
-    for (uint32_t i = 0; i < 240; i++) {
-	for (uint32_t j = 0; j < imageWidth; j++) {
-	    *p = val;
-	    p++;
-	}
-	val--;
-    }
+    // uint16_t val = 0xffff;
+    // for (uint32_t i = 0; i < 240; i++) {
+	// for (uint32_t j = 0; j < imageWidth; j++) {
+	    // *p = val;
+	    // p++;
+	// }
+	// val--;
+    // }
 
-    val = 0xffff;
-    for (uint32_t i = 240; i < imageHeight; i++) {
-	for (uint32_t j = 0; j < imageWidth; j++) {
-	    *p = val;
-	    p++;
-	}
-	val--;
-    }
+    // val = 0xffff;
+    // for (uint32_t i = 240; i < imageHeight; i++) {
+	// for (uint32_t j = 0; j < imageWidth; j++) {
+	    // *p = val;
+	    // p++;
+	// }
+	// val--;
+    // }
     transitionImageLayout(*m_utextureImage, vk::ImageLayout::eUndefined,
                           vk::ImageLayout::eTransferDstOptimal,
                           vk::PipelineStageFlagBits::eTopOfPipe,
