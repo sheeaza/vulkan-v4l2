@@ -1,5 +1,4 @@
 find_package(PkgConfig REQUIRED)
-pkg_search_module(GLFW REQUIRED glfw3)
 
 find_package (Threads)
 find_package(Vulkan REQUIRED)
@@ -8,10 +7,9 @@ find_package(OpenCV REQUIRED)
 aux_source_directory(. SOURCE_FILES)
 add_executable(${PROJECT_NAME} ${SOURCE_FILES})
 
-include_directories(${GLFW_INCLUDE_DIRS}
-                    ${OpenCV_INCLUDE_DIRS})
+include_directories(${OpenCV_INCLUDE_DIRS})
 target_link_libraries(${PROJECT_NAME} ${Vulkan_LIBRARIES}
-                                      ${GLFW_STATIC_LIBRARIES}
+                                      glfw
                                       ${CMAKE_THREAD_LIBS_INIT}
                                       ${OpenCV_LIBS})
 

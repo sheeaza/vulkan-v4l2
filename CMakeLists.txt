@@ -7,11 +7,18 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 #fix stdlib.h not found issue
 set(CMAKE_NO_SYSTEM_FROM_IMPORTED 1)
 
-add_subdirectory(src)
-
 if(NOT CMAKE_BUILD_TYPE)
     set(CMAKE_BUILD_TYPE Debug)
 endif()
 
 set(CMAKE_INSTALL_PREFIX ${PROJECT_BINARY_DIR}/${CMAKE_BUILD_TYPE})
 
+add_subdirectory(src)
+
+# glfw
+set(GLFW_BUILD_DOCS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_TESTS OFF CACHE BOOL "" FORCE)
+set(GLFW_BUILD_EXAMPLES OFF CACHE BOOL "" FORCE)
+set(GLFW_INSTALL OFF CACHE BOOL "" FORCE)
+set(GLFW_USE_WAYLAND ON CACHE BOOL "" FORCE)
+add_subdirectory(thirdparty/glfw)
